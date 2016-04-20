@@ -292,16 +292,14 @@ module Benchmark
   # Benchmark::Tms object.
   #
   def measure(label = "") # :yield:
-    t0 = Benchmark.times.retain # FIXME: it seems to me that RubyMotion needs retain
-    r0 = NSDate.date
+    t0, r0 = Benchmark.times, Time.now
     yield
-    t1 = Benchmark.times.retain # FIXME: it seems to me that RubyMotion needs retain
-    r1 = NSDate.date
+    t1, r1 = Benchmark.times, Time.now
     Benchmark::Tms.new(t1.utime  - t0.utime,
                        t1.stime  - t0.stime,
                        t1.cutime - t0.cutime,
                        t1.cstime - t0.cstime,
-                       r1.timeIntervalSinceDate(r0).to_f,
+                       r1.to_f - r0.to_f,
                        label)
   end
 
